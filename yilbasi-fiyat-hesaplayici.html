@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Yılbaşı Fiyat Hesaplayıcı</title>
+  <style>
+    .calc-box {
+      max-width: 480px;
+      padding: 20px;
+      border: 1px solid #9bc4a9;
+      border-radius: 12px;
+      background: #f4faf6;
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    .calc-box input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #b5d8c2;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    .calc-box button {
+      width: 100%;
+      padding: 10px;
+      background: #4e8f65;
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .calc-box button:hover {
+      background: #3d744f;
+    }
+    .calc-result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #d7e8dd;
+    }
+  </style>
+</head>
+<body>
+  <div class="calc-box">
+    <h3 style="color:#4e8f65;">Yılbaşı Konaklama Fiyat Hesaplayıcı</h3>
+
+    <label>Yetişkin sayısı</label>
+    <input id="adult" type="number" min="1" value="2">
+
+    <label>Çocuk sayısı</label>
+    <input id="child" type="number" min="0" max="2" value="0">
+
+    <label>1. çocuk yaşı</label>
+    <input id="c1" type="number" min="0" max="17">
+
+    <label>2. çocuk yaşı</label>
+    <input id="c2" type="number" min="0" max="17">
+
+    <label>Gece sayısı</label>
+    <input id="nights" type="number" min="1" max="2" value="1">
+
+    <button onclick="calcPrice()">Hesapla</button>
+
+    <div id="result" class="calc-result"></div>
+  </div>
+
+  <script>
+    function childFactor(age) {
+      if (!age) return 0;
+      if (age <= 6) return 0;
+      if (age <= 12) return 0.5;
+      return 1;
+    }
+
+    function calcPrice() {
+      const adult = Number(document.getElementById("adult").value);
+      const c1 = Number(document.getElementById("c1").value);
+      const c2 = Number(document.getElementById("c2").value);
+      const nights = Number(document.getElementById("nights").value);
+
+      const totalChildFactor = childFactor(c1) + childFactor(c2);
+
+      let prices = (nights === 1)
+        ? { otel: 4400, bung: 4900, delux: 5300 }
+        : { otel: 5500, bung: 6200, delux: 6400 };
+
+      const calc = (p) => (adult * p) + (totalChildFactor * p);
+
+      document.getElementById("result").innerHTML = `
+        <strong style="color:#4e8f65;">Toplam Fiyatlar (${nights} gece):</strong><br><br>
+        🏨 Otel: <strong>${calc(prices.otel)} TL</strong><br>
+        🏡 Bungalov: <strong>${calc(prices.bung)} TL</strong><br>
+        🌿 Delüks Bungalov: <strong>${calc(prices.delux)} TL</strong>
+      `;
+    }
+  </script>
+</body>
+</html>
