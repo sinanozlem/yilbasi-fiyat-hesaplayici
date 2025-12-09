@@ -75,27 +75,37 @@
       return 1;
     }
 
-    function calcPrice() {
-      const adult = Number(document.getElementById("adult").value);
-      const c1 = Number(document.getElementById("c1").value);
-      const c2 = Number(document.getElementById("c2").value);
-      const nights = Number(document.getElementById("nights").value);
+    function childFactor(age) {
+  if (!age) return 0;
+  if (age <= 6) return 0;
+  if (age <= 12) return 0.5;
+  return 1;
+}
 
-      const totalChildFactor = childFactor(c1) + childFactor(c2);
+function calcPrice() {
+  const adult = Number(document.getElementById("adult").value);
+  const c1 = Number(document.getElementById("c1").value);
+  const c2 = Number(document.getElementById("c2").value);
+  const nights = Number(document.getElementById("nights").value);
 
-      let prices = (nights === 1)
-        ? { otel: 5500, bung: 6200, delux: 6400 }
-        : { otel: 6500, bung: 7200, delux: 7400 };
+  const totalChildFactor = childFactor(c1) + childFactor(c2);
 
-      const calc = (p) => (adult * p) + (totalChildFactor * p);
+  let prices = (nights === 1)
+    ? { otel: 4400, bung: 4900, delux: 5300 }
+    : { otel: 5500, bung: 6200, delux: 6400 };
 
-      document.getElementById("result").innerHTML = `
-        <strong style="color:#4e8f65;">Toplam Fiyatlar (${nights} gece):</strong><br><br>
-        🏨 Otel: <strong>${calc(prices.otel)} TL</strong><br>
-        🏡 Bungalov: <strong>${calc(prices.bung)} TL</strong><br>
-        🌿 Delüks Bungalov: <strong>${calc(prices.delux)} TL</strong>
-      `;
-    }
+  const calc = (p) => (adult * p) + (totalChildFactor * p);
+
+  const otelTotal = calc(prices.otel);
+
+  document.getElementById("result").innerHTML = `
+    <strong style="color:#4e8f65;">Toplam Fiyatlar (${nights} gece):</strong><br><br>
+    🏨 Otel: <strong>${otelTotal.toLocaleString('tr-TR')} TL</strong><br>
+    <span style="color:#c0392b; font-weight:bold;">Son 5 oda!</span><br><br>
+    🏡 Bungalov: <span style="color:#777;">Bu oda tipimiz dolmuştur. Teşekkürler.</span><br>
+    🌿 Delüks Bungalov: <span style="color:#777;">Bu oda tipimiz dolmuştur. Teşekkürler.</span>
+  `;
+}
   </script>
 </body>
 </html>
