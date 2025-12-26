@@ -82,23 +82,30 @@
 
       const totalChildFactor = childFactor(c1) + childFactor(c2);
 
-      // Bungalov kişi başı fiyatları
+      // Kişi başı fiyatlar (aktif tipler)
+      // Otel: eski tarifene göre (1 gece 4400 / 2 gece 5500)
+      const otelPrice = nights === 1 ? 5500 : 6500;
+
+      // Bungalov: güncel tarifene göre (1 gece 6500 / 2 gece 7500)
       const bungalovPrice = nights === 1 ? 6500 : 7500;
 
       const calc = (p) => (adult * p) + (totalChildFactor * p);
+
+      const otelTotal = calc(otelPrice);
       const bungalovTotal = calc(bungalovPrice);
 
       document.getElementById("result").innerHTML = `
         <strong style="color:#4e8f65;">Toplam Fiyatlar (${nights} gece):</strong><br><br>
 
-        🏨 Otel: 
-        <span style="color:#777;">Bu oda tipimiz dolmuştur. Teşekkürler.</span><br><br>
+        🏨 Otel:
+        <strong>${otelTotal.toLocaleString('tr-TR')} TL</strong><br>
+        <span style="color:#c0392b; font-weight:bold;">Son 1 otel oda!</span><br><br>
 
-        🏡 Bungalov: 
+        🏡 Bungalov:
         <strong>${bungalovTotal.toLocaleString('tr-TR')} TL</strong><br>
         <span style="color:#c0392b; font-weight:bold;">Son 1 bungalov oda!</span><br><br>
 
-        🌿 Delüks Bungalov: 
+        🌿 Delüks Bungalov:
         <span style="color:#777;">Bu oda tipimiz dolmuştur. Teşekkürler.</span>
       `;
     }
